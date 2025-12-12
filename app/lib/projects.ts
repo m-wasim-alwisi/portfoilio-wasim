@@ -34,8 +34,8 @@ export const projects: Project[] = [
     // '/images/calculator-3.png'
   ],
   techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
-  liveLink: 'https://yourdomain.com/calculator',
-  githubLink: 'https://github.com/yourusername/nextjs-calculator',
+  liveLink: 'https://calculator-ten-delta.vercel.app/',
+  githubLink: 'https://github.com/m-wasim-alwisi/calculator',
   category: 'web',
   status: 'completed',
   features: [

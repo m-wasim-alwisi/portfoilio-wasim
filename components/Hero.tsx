@@ -45,7 +45,6 @@ export default function Hero({
         </h1>
         <p className="text-lg md:text-xl text-gray-300 mb-4">
           {title} | {tagline}
-          
         </p>
         <a
           href="#projects"

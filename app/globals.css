@@ -5,6 +5,16 @@
   --foreground: #171717;
 }
 
+<<<<<<< HEAD
+=======
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+>>>>>>> f0bf2fe163f9001125f6084adfc5b7af6ad321b0
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

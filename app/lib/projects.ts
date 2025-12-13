@@ -1,29 +1,5 @@
-<<<<<<< HEAD
 import { Project } from '@/types/project';
 
-=======
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  image?: string;
-  slug: string;
-  gallery?: string[];
-  techStack: string[];
-  features: string[];
-  category:string;
-  status: string,
-  liveLink?: `http://${string}` | `https://${string}`;
-  githubLink?: `https://github.com/${string}`;
-  demoLink?: `https://${string}`;
-  longDescription?:string;
-  videoLink?: `https://${'youtube' | 'vimeo'}.com/${string}`;
-  documentation?: `https://${string}.${string}`;
-   createdAt?: Date | string;
-  updatedAt?: Date | string;
-}
-// Example usage:
->>>>>>> f0bf2fe163f9001125f6084adfc5b7af6ad321b0
 export const projects: Project[] = [
   {
   id: '1',
@@ -39,11 +15,7 @@ export const projects: Project[] = [
     // '/images/calculator-3.png'
   ],
   techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
-<<<<<<< HEAD
   liveLink: 'https://calculator-ten-delta.vercel.app',
-=======
-  liveLink: 'https://calculator-ten-delta.vercel.app/',
->>>>>>> f0bf2fe163f9001125f6084adfc5b7af6ad321b0
   githubLink: 'https://github.com/m-wasim-alwisi/calculator',
   category: 'web',
   status: 'completed',
@@ -64,17 +36,10 @@ export const projects: Project[] = [
   description: 'A modern, responsive AI chat application built with Next.js and FastAPI.',
   longDescription:
     'A fully responsive AI chat application combining a Next.js frontend with a FastAPI backend. It supports real-time conversation, context-aware responses, and a polished mobile-first UI designed with Tailwind CSS. This project demonstrates clean API integration, state management using React hooks, and scalable architecture for AI-powered applications.',
-<<<<<<< HEAD
   image: '/Ai.jpg',
   slug: 'nextjs-ai-chat',
   gallery: [
      '/Ai.jpg',
-=======
-  image: '/ai.jpg',
-  slug: 'nextjs-ai-chat',
-  gallery: [
-     '/ai.jpg',
->>>>>>> f0bf2fe163f9001125f6084adfc5b7af6ad321b0
     // '/images/ai-chat-2.png',
     // '/images/ai-chat-3.png'
   ],
@@ -94,10 +59,4 @@ export const projects: Project[] = [
   createdAt: '2025-12-11',
   updatedAt: '2025-12-11'
 }
-<<<<<<< HEAD
 ];
-=======
-
-
-];
->>>>>>> f0bf2fe163f9001125f6084adfc5b7af6ad321b0

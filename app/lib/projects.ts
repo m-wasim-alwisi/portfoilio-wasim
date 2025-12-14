@@ -44,8 +44,8 @@ export const projects: Project[] = [
     // '/images/ai-chat-3.png'
   ],
   techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'FastAPI', 'Python','pydantic','uvicorn'],
-  liveLink: 'https://yourdomain.com/ai-chat',
-  githubLink: 'https://github.com/yourusername/nextjs-ai-chat',
+  liveLink: 'https://chat-ai-black-eta.vercel.app',
+  githubLink: 'https://github.com/m-wasim-alwisi/chat-ai',
   category: 'web',
   status: 'in progress',
   features: [

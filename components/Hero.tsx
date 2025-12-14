@@ -12,7 +12,7 @@ interface HeroProps {
 }
 
 export default function Hero({
-  name = "Your Name",
+  name = "Wasim",
   title = "Full-Stack Developer",
   tagline = "Creative Problem Solver",
   imageSrc = "/me.jpg",

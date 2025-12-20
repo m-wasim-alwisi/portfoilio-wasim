@@ -3,6 +3,7 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import Me from "@/components/Me";
 import Footer from "@/components/Footer";
+// import prisma from '../lib/prisma';
 
 export default function Home() {
   return (

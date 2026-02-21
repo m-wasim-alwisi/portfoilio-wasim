@@ -105,7 +105,7 @@ export const projects: Project[] = [
     '/csv-analyzer (4).jpg',
   ],
   techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Lucide React', 'Papa Parse'],
-  liveLink: 'https://csv-analyzer.vercel.app',
+  liveLink: 'https://csv-analyzer-brown.vercel.app',
   githubLink: 'https://github.com/m-wasim-alwisi/csv-analyzer',
   category: 'web',
   status: 'completed',

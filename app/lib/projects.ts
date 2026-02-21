@@ -58,5 +58,37 @@ export const projects: Project[] = [
   ],
   createdAt: '2025-12-11',
   updatedAt: '2025-12-11'
-}
+},
+
+{ id: '3',
+    title: 'Social Media Sentiment Tracker',
+    description: 'A real-time dashboard that monitors and analyzes social media sentiment about any topic.',
+    longDescription:
+      'A comprehensive social media sentiment analysis dashboard built with Next.js 14, TypeScript, and Tailwind CSS. The application scrapes data from Reddit (real API) and Twitter (simulated), analyzes sentiment using the AFINN-165 word list, and displays results through interactive visualizations. Features include real-time mood scoring, pie and bar charts, live post feed, auto-refresh functionality, and a modern glassmorphism UI with smooth Framer Motion animations.',
+    image: '/sentiment-tracker.jpg',
+    slug: 'sentiment-tracker',
+    gallery: [
+      '/sentiment-tracker.jpg',
+    ],
+    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Recharts', 'Sentiment.js'],
+    liveLink: 'https://your-sentiment-tracker.vercel.app',
+    githubLink: 'https://github.com/m-wasim-alwisi/sentiment-tracker',
+    category: 'web',
+    status: 'completed',
+    features: [
+      'Real-time sentiment analysis with mood scoring (-100 to +100)',
+      'Live data from Reddit API with simulated Twitter data',
+      'Interactive pie and bar charts using Recharts',
+      'Auto-refresh every 30 seconds',
+      'Live feed showing recent posts with sentiment indicators',
+      'Modern glassmorphism UI design',
+      'Smooth animations with Framer Motion',
+      'Responsive design for desktop and mobile',
+      'Quick topic buttons for instant analysis',
+      'Platform comparison (Twitter vs Reddit)'
+    ],
+    createdAt: '2025-01-15',
+    updatedAt: '2025-01-20'
+  }
+
 ];

@@ -89,6 +89,43 @@ export const projects: Project[] = [
     ],
     createdAt: '2025-01-15',
     updatedAt: '2025-01-20'
-  }
+  },
+  {
+  id: '4',
+  title: 'CSV Analyzer',
+  description: 'A powerful web application for analyzing and validating CSV files with 5 columns.',
+  longDescription:
+    'A comprehensive CSV analysis tool built with Next.js 15, TypeScript, and Tailwind CSS. This application provides instant insights into CSV data with automatic column type detection, statistical analysis, null value detection, invalid data identification, and number-in-text detection. Features include a beautiful dark mode, responsive design, interactive data tables, and JSON report export. Perfect for data validation and quality assurance.',
+  image: '/csv-analyzer (1).jpg',
+  slug: 'csv-analyzer',
+  gallery: [
+    '/csv-analyzer (1).jpg',
+    '/csv-analyzer (2).jpg',
+    '/csv-analyzer (3).jpg',
+    '/csv-analyzer (4).jpg',
+  ],
+  techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Lucide React', 'Papa Parse'],
+  liveLink: 'https://csv-analyzer.vercel.app',
+  githubLink: 'https://github.com/m-wasim-alwisi/csv-analyzer',
+  category: 'web',
+  status: 'completed',
+  features: [
+    'Automatic column type detection (numeric, integer, string, email, date, phone, boolean, name)',
+    'Statistical analysis (minimum, maximum, average, sum) for numeric columns',
+    'Null value detection across all columns',
+    'Invalid data identification based on column type',
+    'Number-in-text detection for string validation',
+    'Interactive data table with preview of first 100 rows',
+    'Data quality score calculation',
+    'Beautiful dark mode with smooth transitions',
+    'Responsive design for desktop, tablet, and mobile',
+    'Export analysis reports in JSON format',
+    'Drag and drop CSV file upload',
+    'Real-time validation with detailed error messages',
+    'Tabbed interface for Analysis, Data Quality, and Data Preview'
+  ],
+  createdAt: '2025-01-25',
+  updatedAt: '2025-01-28'
+}
 
 ];

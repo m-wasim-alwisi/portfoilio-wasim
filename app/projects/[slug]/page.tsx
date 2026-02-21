@@ -1,13 +1,13 @@
 // src/app/projects/[slug]/page.tsx
-'use client'; // Required for Framer Motion animations
+"use client"; // Required for Framer Motion animations
 
-import { notFound } from 'next/navigation';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import {projects} from "@/app/lib/projects";
-import Footer from '@/components/Footer';
+import { notFound } from "next/navigation";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { projects } from "@/app/lib/projects";
+import Footer from "@/components/Footer";
 
 export default function ProjectPage() {
   const params = useParams();
@@ -26,14 +26,18 @@ export default function ProjectPage() {
         className="relative h-96 flex items-center justify-center bg-gradient-to-b from-gray-800 to-gray-900"
       >
         <Image
-          src={project.image??''}
+          src={project.image ?? ""}
           alt={project.title}
-          fill={true}
+          fill
           className="object-cover opacity-50"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{project.title}</h1>
-          <p className="text-xl text-gray-300 max-w-2xl">{project.description}</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            {project.title}
+          </h1>
+          <p className="text-xl text-gray-300 max-w-2xl">
+            {project.description}
+          </p>
         </div>
       </motion.section>
 
@@ -46,7 +50,9 @@ export default function ProjectPage() {
           className="mb-12"
         >
           <h2 className="text-3xl font-semibold mb-6">About This Project</h2>
-          <p className="text-gray-300 leading-relaxed">{project.longDescription}</p>
+          <p className="text-gray-300 leading-relaxed">
+            {project.longDescription}
+          </p>
         </motion.div>
 
         {/* Gallery (Optional) */}
@@ -60,19 +66,25 @@ export default function ProjectPage() {
             <h2 className="text-3xl font-semibold mb-6">Gallery</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {project.gallery.map((img, index) => (
-                <div key={index} className="relative h-64">
+                <div
+                  key={index}
+                  className="relative h-64 overflow-hidden rounded-lg"
+                >
                   <Image
                     src={img}
                     alt={`${project.title} screenshot ${index + 1}`}
-                    fill={true}
-                    className="object-cover rounded-lg"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={75}
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                    priority={index < 2}
+                    loading={index < 2 ? "eager" : "lazy"}
                   />
                 </div>
               ))}
             </div>
           </motion.div>
         )}
-
         {/* Tech Stack */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -129,18 +141,13 @@ export default function ProjectPage() {
           transition={{ delay: 0.8 }}
           className="mt-12 text-center"
         >
-          <Link
-            href="/"
-            className="text-blue-400 hover:underline"
-          >
+          <Link href="/" className="text-blue-400 hover:underline">
             ← Back to Home
           </Link>
         </motion.div>
         <br />
-
       </section>
-      <Footer/>
+      <Footer />
     </div>
-    
   );
 }

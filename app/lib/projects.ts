@@ -71,7 +71,7 @@ export const projects: Project[] = [
       '/sentiment-tracker.jpg',
     ],
     techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Recharts', 'Sentiment.js'],
-    liveLink: 'https://your-sentiment-tracker.vercel.app',
+    liveLink: 'https://sentiment-tracker-ten.vercel.app/',
     githubLink: 'https://github.com/m-wasim-alwisi/sentiment-tracker',
     category: 'web',
     status: 'completed',

@@ -1,24 +1,31 @@
 "use client";
-import { FormEvent, useState } from "react"; // 1. Import FormEvent
+import { FormEvent, useState, useRef } from "react"; 
 import { Mail } from "lucide-react";
 import { insertNewItem } from '@/lib/actions';
-import { useRef } from 'react';
+import Toast from '@/components/Toast';
 
 export default function Contact() {
   const [status, setStatus] = useState("");
-    const formRef = useRef<HTMLFormElement>(null);
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+  const [showToast, setShowToast] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent default form submission
-    setStatus("Running");
-    // Create FormData from the form element
-    const formData = new FormData(e.currentTarget);
+    e.preventDefault(); 
+    setStatus("Sending...");
     
+    const formData = new FormData(e.currentTarget);
     const response = await insertNewItem(formData);
-    // alert(response.message);
+
     if (response.status === 200) {
       formRef.current?.reset();
       setStatus(response.message);
+      setToastType('success');
+      setShowToast(true);
+    } else {
+      setStatus("Failed to send");
+      setToastType('error');
+      setShowToast(true);
     }
   };
 
@@ -29,19 +36,18 @@ export default function Contact() {
       </h2>
 
       <form 
-      ref={formRef} 
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto"
-      aria-label="Contact form" // Add this
+        ref={formRef} 
+        onSubmit={handleSubmit}
+        className="max-w-md mx-auto"
+        aria-label="Contact form"
       >
-        
         <input
           name="name"
           type="text"
           placeholder="Your Name"
           required
           className="w-full p-3 mb-4 bg-gray-700 rounded text-white"
-          aria-label="Your Name" // Add this
+          aria-label="Your Name"
         />
         <input
           name="email"
@@ -49,24 +55,31 @@ export default function Contact() {
           placeholder="Your Email"
           required
           className="w-full p-3 mb-4 bg-gray-700 rounded text-white"
-          aria-label="Your Email" // Add this
+          aria-label="Your Email"
         />
         <textarea
           name="message"
           placeholder="Message"
           required
           className="w-full p-3 mb-4 bg-gray-700 rounded text-white"
-          aria-label="Message" // Add this
-          
+          aria-label="Message"   
         ></textarea>
         <button
           type="submit"
           className="w-full bg-blue-600 py-3 rounded hover:bg-blue-700 transition-colors"
         >
-          Send
+          {status === "Sending..." ? "Sending..." : "Send"}
         </button>
-        <p className="mt-4 text-center">{status}</p>
       </form>
+
+      {/* Floating Toast Notification */}
+      {showToast && (
+        <Toast 
+          message={status} 
+          type={toastType} 
+          onClose={() => setShowToast(false)} 
+        />
+      )}
     </section>
   );
 }

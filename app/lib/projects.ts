@@ -126,6 +126,41 @@ export const projects: Project[] = [
   ],
   createdAt: '2025-01-25',
   updatedAt: '2025-01-28'
-}
-
+},
+ {
+    id: '5',
+    title: 'Lease Manager',
+    description: 'A comprehensive property lease management system for landlords and property managers.',
+    longDescription:
+      'A full-featured lease management dashboard built with Next.js , TypeScript, and Tailwind CSS. This application helps landlords and property managers efficiently manage their rental properties, tenants, leases, and payments. Features include intuitive property and unit management, tenant tracking, lease lifecycle management (creation, renewal, termination), payment tracking and history, automated rent reminders, expense management, financial reporting with charts, and a modern responsive UI with dark mode support.',
+    image: '/lease-manager.jpg',
+    slug: 'lease-manager',
+    gallery: [
+      '/lease-manager.jpg',
+      // '/lease-manager-dashboard.jpg',
+      // '/lease-manager-properties.jpg',
+      // '/lease-manager-tenants.jpg',
+    ],
+    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Drizzle ORM', 'better-sqlite3', 'Recharts', 'Lucide React'],
+    liveLink: 'https://lease-manager.vercel.app',
+    githubLink: 'https://github.com/m-wasim-alwisi/lease-manager',
+    category: 'web',
+    status: 'completed',
+    features: [
+      'Property and unit management with detailed information',
+      'Tenant management with contact details and lease history',
+      'Lease lifecycle management (create, renew, terminate)',
+      'Payment tracking with status indicators (paid, pending, overdue)',
+      'Automated rent reminder system',
+      'Expense tracking and categorization',
+      'Financial dashboard with revenue and expense charts',
+      'Lease expiration alerts and notifications',
+      'Search and filter functionality across all entities',
+      'Dark mode support with smooth transitions',
+      'Responsive design for desktop, tablet, and mobile',
+      'Data export capabilities'
+    ],
+    createdAt: '2025-02-01',
+    updatedAt: '2025-02-15'
+  }
 ];

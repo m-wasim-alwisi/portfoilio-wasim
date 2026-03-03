@@ -1,11 +1,15 @@
 // app/dashboard/page.tsx
+// Remove 'use client' - this is a Server Component
+
 import { db } from '@/db';
 import { subscribers } from '@/db/schema';
-import { Trash2, Mail, User, Calendar } from "lucide-react";
+import { Trash2, Mail, User, Calendar, LogOut } from "lucide-react";
 import { revalidatePath } from "next/cache";
 import { desc, eq } from 'drizzle-orm';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { logout } from '@/lib/auth-actions';
 
-// Define the Subscriber type
 interface Subscriber {
   id: number;
   name: string | null;
@@ -14,8 +18,20 @@ interface Subscriber {
   createdAt: string;
 }
 
+// Check authentication on server side
+async function checkAuth() {
+  const cookieStore = await cookies();
+  const sessionToken = cookieStore.get('auth_session')?.value;
+  
+  if (!sessionToken) {
+    redirect('/login');
+  }
+}
+
 export default async function Dashboard() {
-  // 1. Fetch data from SQLite using Drizzle
+  // Check authentication
+  await checkAuth();
+
   let subscribersList: Subscriber[] = [];
   
   try {
@@ -25,20 +41,22 @@ export default async function Dashboard() {
     console.error('Error fetching subscribers:', error);
   }
 
-  // 2. Server Action to delete a subscriber
   async function deleteSubscriber(formData: FormData) {
     "use server";
     
     const id = formData.get("id") as string;
     
     try {
+      // await db.delete(subscribers).where(subscribers.id.eq(parseInt(id)));
       await db.delete(subscribers).where(eq(subscribers.id, parseInt(id)));
+
       revalidatePath("/dashboard");
     } catch (error) {
       console.error('Error deleting subscriber:', error);
       throw new Error('Failed to delete subscriber');
     }
   }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-6xl mx-auto">
@@ -46,9 +64,21 @@ export default async function Dashboard() {
           <h1 className="text-3xl font-bold flex items-center gap-3">
             <Mail className="text-blue-500" /> Subscription Manager
           </h1>
-          <span className="bg-blue-600 px-4 py-1 rounded-full text-sm">
-            {subscribersList.length} Total Subscribers
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="bg-blue-600 px-4 py-1 rounded-full text-sm">
+              {subscribersList.length} Total Subscribers
+            </span>
+            {/* Logout Form - Server Component */}
+            <form action={logout}>
+              <button 
+                type="submit"
+                className="flex items-center gap-2 text-gray-400 hover:text-red-400 transition-colors"
+              >
+                <LogOut size={20} />
+                <span>Logout</span>
+              </button>
+            </form>
+          </div>
         </header>
 
         <div className="bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-700">

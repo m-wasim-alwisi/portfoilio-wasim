@@ -1,29 +1,28 @@
 // app/dashboard/page.tsx
-import pool from '@/lib/mysql';
+import { db } from '@/db';
+import { subscribers } from '@/db/schema';
 import { Trash2, Mail, User, Calendar } from "lucide-react";
 import { revalidatePath } from "next/cache";
+import { desc, eq } from 'drizzle-orm';
 
 // Define the Subscriber type
 interface Subscriber {
-  id: string;
-  name: string;
+  id: number;
+  name: string | null;
   email: string;
   message: string | null;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export default async function Dashboard() {
-  // 1. Fetch data from MySQL
-  let subscribers: Subscriber[] = [];
+  // 1. Fetch data from SQLite using Drizzle
+  let subscribersList: Subscriber[] = [];
   
   try {
-    const [rows] = await pool.query(
-      'SELECT * FROM subscribers ORDER BY createdAt DESC'
-    );
-    subscribers = rows as Subscriber[];
+    const rows = await db.select().from(subscribers).orderBy(desc(subscribers.createdAt));
+    subscribersList = rows as unknown as Subscriber[];
   } catch (error) {
     console.error('Error fetching subscribers:', error);
-    // Return empty array or handle error appropriately
   }
 
   // 2. Server Action to delete a subscriber
@@ -33,17 +32,13 @@ export default async function Dashboard() {
     const id = formData.get("id") as string;
     
     try {
-      await pool.query(
-        'DELETE FROM subscribers WHERE id = ?',
-        [id]
-      );
-      revalidatePath("/dashboard"); // Refresh the page data
+      await db.delete(subscribers).where(eq(subscribers.id, parseInt(id)));
+      revalidatePath("/dashboard");
     } catch (error) {
       console.error('Error deleting subscriber:', error);
       throw new Error('Failed to delete subscriber');
     }
   }
-
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-6xl mx-auto">
@@ -52,7 +47,7 @@ export default async function Dashboard() {
             <Mail className="text-blue-500" /> Subscription Manager
           </h1>
           <span className="bg-blue-600 px-4 py-1 rounded-full text-sm">
-            {subscribers.length} Total Subscribers
+            {subscribersList.length} Total Subscribers
           </span>
         </header>
 
@@ -68,7 +63,7 @@ export default async function Dashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-700">
-              {subscribers.map((s: Subscriber) => (
+              {subscribersList.map((s: Subscriber) => (
                 <tr key={s.id} className="hover:bg-gray-750 transition-colors">
                   <td className="p-4 font-medium">{s.name || "Anonymous"}</td>
                   <td className="p-4 text-blue-400">{s.email}</td>
@@ -94,7 +89,7 @@ export default async function Dashboard() {
             </tbody>
           </table>
           
-          {subscribers.length === 0 && (
+          {subscribersList.length === 0 && (
             <div className="p-20 text-center text-gray-500">
               No subscribers yet.
             </div>

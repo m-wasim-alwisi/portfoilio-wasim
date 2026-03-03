@@ -5,4 +5,6 @@ export const subscribers = sqliteTable('subscribers', {
   name: text('name').notNull(),
   email: text('email').notNull(),
   message: text('message').notNull(),
+  createdAt: text('created_at').default(new Date().toISOString()),
+
 });

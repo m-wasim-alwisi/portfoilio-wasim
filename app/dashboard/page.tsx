@@ -1,24 +1,20 @@
 // app/dashboard/page.tsx
-// Remove 'use client' - this is a Server Component
-
-import { db } from '@/db';
-import { subscribers } from '@/db/schema';
+import { db } from '@/lib/db';
+import { ObjectId } from 'mongodb';
 import { Trash2, Mail, User, Calendar, LogOut } from "lucide-react";
 import { revalidatePath } from "next/cache";
-import { desc, eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { logout } from '@/lib/auth-actions';
 
 interface Subscriber {
-  id: number;
+  _id: string;
   name: string | null;
   email: string;
   message: string | null;
   createdAt: string;
 }
 
-// Check authentication on server side
 async function checkAuth() {
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get('auth_session')?.value;
@@ -29,14 +25,13 @@ async function checkAuth() {
 }
 
 export default async function Dashboard() {
-  // Check authentication
   await checkAuth();
 
   let subscribersList: Subscriber[] = [];
   
   try {
-    const rows = await db.select().from(subscribers).orderBy(desc(subscribers.createdAt));
-    subscribersList = rows as unknown as Subscriber[];
+    const subscribers = await db.collection('subscribers').find({}).toArray();
+    subscribersList = subscribers as unknown as Subscriber[];
   } catch (error) {
     console.error('Error fetching subscribers:', error);
   }
@@ -47,9 +42,7 @@ export default async function Dashboard() {
     const id = formData.get("id") as string;
     
     try {
-      // await db.delete(subscribers).where(subscribers.id.eq(parseInt(id)));
-      await db.delete(subscribers).where(eq(subscribers.id, parseInt(id)));
-
+      await db.collection('subscribers').deleteOne({ _id: new ObjectId(id) });
       revalidatePath("/dashboard");
     } catch (error) {
       console.error('Error deleting subscriber:', error);
@@ -68,7 +61,6 @@ export default async function Dashboard() {
             <span className="bg-blue-600 px-4 py-1 rounded-full text-sm">
               {subscribersList.length} Total Subscribers
             </span>
-            {/* Logout Form - Server Component */}
             <form action={logout}>
               <button 
                 type="submit"
@@ -94,7 +86,7 @@ export default async function Dashboard() {
             </thead>
             <tbody className="divide-y divide-gray-700">
               {subscribersList.map((s: Subscriber) => (
-                <tr key={s.id} className="hover:bg-gray-750 transition-colors">
+                <tr key={s._id} className="hover:bg-gray-750 transition-colors">
                   <td className="p-4 font-medium">{s.name || "Anonymous"}</td>
                   <td className="p-4 text-blue-400">{s.email}</td>
                   <td className="p-4 text-gray-400 text-sm max-w-xs truncate">
@@ -105,7 +97,7 @@ export default async function Dashboard() {
                   </td>
                   <td className="p-4 text-right">
                     <form action={deleteSubscriber}>
-                      <input type="hidden" name="id" value={s.id} />
+                      <input type="hidden" name="id" value={s._id.toString()} />
                       <button 
                         type="submit"
                         className="text-red-400 hover:text-red-600 p-2 transition-colors"

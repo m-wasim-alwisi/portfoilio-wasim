@@ -1,12 +1,8 @@
-// lib/auth-actions.ts
 'use server';
 
-import { db } from '@/db';
-import { users } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { db } from './db';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 const SESSION_COOKIE_NAME = 'auth_session';
@@ -31,16 +27,17 @@ export async function register(formData: FormData) {
     const password = formData.get('password') as string;
     const name = formData.get('name') as string;
 
-    const existingUser = await db.select().from(users).where(eq(users.email, email));
-    if (existingUser.length > 0) {
+    const existingUser = await db.collection('users').findOne({ email });
+    if (existingUser) {
       return { success: false, message: 'Email already exists' };
     }
 
     const hashedPassword = await hashPassword(password);
-    await db.insert(users).values({
+    await db.collection('users').insertOne({
       email,
       password: hashedPassword,
       name,
+      createdAt: new Date().toISOString(),
     });
 
     revalidatePath('/login');
@@ -56,7 +53,7 @@ export async function login(formData: FormData) {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    const [user] = await db.select().from(users).where(eq(users.email, email));
+    const user = await db.collection('users').findOne({ email });
     if (!user) {
       return { success: false, message: 'Invalid credentials' };
     }
@@ -84,12 +81,9 @@ export async function login(formData: FormData) {
   }
 }
 
-// FIX: Return void instead of object
 export async function logout() {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
-  redirect('/login');
-  // No return statement needed
 }
 
 export async function isAuthenticated(): Promise<boolean> {

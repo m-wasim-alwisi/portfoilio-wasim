@@ -4,11 +4,13 @@
 import { FormEvent, useState } from 'react';
 import { Mail, Lock, User } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { register } from '@/lib/auth-actions';
 
 export default function RegisterPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,11 +20,10 @@ export default function RegisterPage() {
     const formData = new FormData(e.currentTarget);
     const result = await register(formData);
 
-    if (!result.success) {
-      setError(result.message);
+    if (result.success) {
+      router.push('/login');
     } else {
-      // Redirect to login after successful registration
-      window.location.href = '/login';
+      setError(result.message);
     }
     setLoading(false);
   };

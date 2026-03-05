@@ -1,4 +1,8 @@
 {
   "buildCommand": "npm install && npm run build",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "env": {
+    "MONGODB_URI": "@mongodb_uri",
+    "MONGODB_DB": "@mongodb_db"
+  }
 }

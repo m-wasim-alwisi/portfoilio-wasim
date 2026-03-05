@@ -1,5 +1,4 @@
 
-// lib/subscriber-actions.ts
 'use server';
 
 import { db } from './db';
@@ -18,6 +17,7 @@ export async function addSubscriber(formData: FormData) {
       email,
       message,
       createdAt: new Date().toISOString(),
+      active: true,
     });
 
     revalidatePath('/');

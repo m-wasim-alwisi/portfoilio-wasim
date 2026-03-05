@@ -5,7 +5,6 @@ import { db } from './db';
 import { revalidatePath } from 'next/cache';
 import { ObjectId } from 'mongodb';
 
-// Add new subscriber
 export async function insertNewItem(formData: FormData) {
   try {
     const name = formData.get('name') as string;
@@ -27,14 +26,12 @@ export async function insertNewItem(formData: FormData) {
   }
 }
 
-// Delete subscriber
 export async function deleteSubscriber(formData: FormData) {
   "use server";
   
   const id = formData.get("id") as string;
   
   try {
-    // MongoDB uses _id field (ObjectId)
     await db.collection('subscribers').deleteOne({ _id: new ObjectId(id) });
     revalidatePath("/dashboard");
   } catch (error) {

@@ -1,16 +1,22 @@
 // app/register/page.tsx
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import { Mail, Lock, User } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { register } from '@/lib/auth-actions';
+import { register, getCSRFToken } from '@/lib/auth-actions';
 
 export default function RegisterPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [csrfToken, setCsrfToken] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    // Get CSRF token on component mount
+    getCSRFToken().then(setCsrfToken);
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,6 +24,8 @@ export default function RegisterPage() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    formData.append('csrf_token', csrfToken);
+    
     const result = await register(formData);
 
     if (result.success) {
@@ -44,6 +52,8 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          <input type="hidden" name="csrf_token" value={csrfToken} />
+          
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Name
@@ -86,7 +96,7 @@ export default function RegisterPage() {
                 name="password"
                 type="password"
                 required
-                minLength={6}
+                minLength={8}
                 className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="••••••••"
               />

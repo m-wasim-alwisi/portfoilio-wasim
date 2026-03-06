@@ -1,16 +1,22 @@
 // app/login/page.tsx
 'use client';
 
-import { FormEvent, useState } from 'react';
-import { Mail, Lock, User } from 'lucide-react';
+import { FormEvent, useState, useEffect } from 'react';
+import { Mail, Lock } from 'lucide-react';
 import Link from 'next/link';
-import { login } from '@/lib/auth-actions';
 import { useRouter } from 'next/navigation';
+import { login, getCSRFToken } from '@/lib/auth-actions';
 
 export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [csrfToken, setCsrfToken] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    // Get CSRF token on component mount
+    getCSRFToken().then(setCsrfToken);
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,12 +24,13 @@ export default function LoginPage() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    formData.append('csrf_token', csrfToken);
+    
     const result = await login(formData);
 
     if (result.success) {
-      // Redirect to dashboard after successful login
       router.push('/dashboard');
-      router.refresh(); // Refresh the page to update cookies
+      router.refresh();
     } else {
       setError(result.message);
     }
@@ -46,6 +53,8 @@ export default function LoginPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          <input type="hidden" name="csrf_token" value={csrfToken} />
+          
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Email
@@ -87,14 +96,14 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* <div className="mt-6 text-center">
+        <div className="mt-6 text-center">
           <p className="text-gray-400">
             Don't have an account?{' '}
             <Link href="/register" className="text-blue-500 hover:text-blue-400">
               Register
             </Link>
           </p>
-        </div> */}
+        </div>
       </div>
     </div>
   );
